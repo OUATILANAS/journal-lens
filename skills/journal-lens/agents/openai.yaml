@@ -1,0 +1,3 @@
+interface:
+  display_name: "Journal Lens"
+  short_description: "Research journal indexing and audit multiple recent issues"

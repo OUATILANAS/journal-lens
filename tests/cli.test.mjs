@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {spawnSync} from 'node:child_process';
+import {runCommand} from '../scripts/journal-lens.mjs';
+const cli=new URL('../scripts/journal-lens.mjs',import.meta.url).pathname;
+const help=spawnSync(process.execPath,[cli,'help'],{encoding:'utf8'});
+assert.equal(help.status,0);assert.equal(JSON.parse(help.stdout).data.commands.journal,'url');
+const invalid=spawnSync(process.execPath,[cli,'--unknown'],{encoding:'utf8'});
+assert.equal(invalid.status,1);assert.equal(JSON.parse(invalid.stdout).ok,false);
+const extracted=spawnSync(process.execPath,[cli,'extract','https://link.springer.com/article/10.1007/example','article'],{encoding:'utf8',input:'Received 1 January 2026 Revised 1 February 2026 Accepted 1 March 2026'});
+assert.equal(extracted.status,0);const row=JSON.parse(extracted.stdout).data;
+assert.equal(row.received,'2026-01-01');assert.equal(row.revised,'2026-02-01');assert.equal(row.accepted,'2026-03-01');assert.equal(row.manual,true);
+await assert.rejects(()=>runCommand('audit',[]),/one to 48/);
+const nonIssue=await runCommand('audit',['https://link.springer.com/journal/12650']);assert.equal(nonIssue.complete,false);assert.match(nonIssue.failures[0].error,/non-issue/);
+console.log('Reusable CLI commands, JSON errors and stdin extraction checks passed.');

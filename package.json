@@ -1,0 +1,23 @@
+{
+  "name": "journal-lens",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/assemble.mjs && bash scripts/build.sh",
+    "validate": "node scripts/validate-artifact.mjs",
+    "dev": "node scripts/assemble.mjs && node scripts/dev.mjs",
+    "test": "node tests/core.test.mjs && node tests/local-http.test.mjs && node tests/cli.test.mjs && node tests/workflow.test.mjs && node tests/persistent-research.test.mjs && node tests/core-collection-view.test.mjs && node tests/install-skill.test.mjs",
+    "tool": "node scripts/journal-lens.mjs",
+    "skill:install": "node scripts/install-skill.mjs"
+  },
+  "version": "1.0.0",
+  "description": "Journal discovery, source-backed indexing checks and article-level acceptance timeline audits.",
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OUATILANAS/journal-lens.git"
+  }
+}
